@@ -25,7 +25,7 @@
 </code></pre><h2 id="test-documentation">Test documentation</h2>
 <p>  The following <a href="docs/test.html">test documentation</a> was generated with <a href="http://mochajs.org/">Mocha&#39;s</a> &quot;doc&quot; reporter, and directly reflects the test suite. This provides an additional source of documentation.</p>
 <h2 id="request-basics">Request basics</h2>
-<p> A request can be initiated by invoking the appropriate method on the <code>request</code> object, then calling <code>.end()</code> to send the request. For example a simple GET request:</p>
+<p> A request can be initiated by invoking the appropriate method on the <code>request</code> object, then calling <code>.end()</code> to send the request. For example a simple <strong>GET</strong> request:</p>
 <pre><code> request
    .get(&#39;/search&#39;)
    .end(function(err, res){
@@ -35,13 +35,13 @@
 <pre><code>request(&#39;GET&#39;, &#39;/search&#39;).end(callback);
 </code></pre><p>ES6 promises are supported. Instead of <code>.end()</code> you can call <code>.then()</code>:</p>
 <pre><code>request(&#39;GET&#39;, &#39;/search&#39;).then(success, failure);
-</code></pre><p> The <strong>node</strong> client may also provide absolute urls:</p>
+</code></pre><p> The <strong>Node</strong> client may also provide absolute URLs. In browsers absolute URLs won&#39;t work unless the server implements <a href="#cors">CORS</a>.</p>
 <pre><code> request
    .get(&#39;http://example.com/search&#39;)
    .end(function(err, res){
 
    });
-</code></pre><p> The <strong>node</strong> client supports making requests to <a href="http://en.wikipedia.org/wiki/Unix_domain_socket">Unix Domain Sockets</a>:</p>
+</code></pre><p> The <strong>Node</strong> client supports making requests to <a href="http://en.wikipedia.org/wiki/Unix_domain_socket">Unix Domain Sockets</a>:</p>
 <pre><code> // pattern: https?+unix://SOCKET_PATH/REQUEST_PATH
  //          Use `%2F` as `/` in SOCKET_PATH
  request
@@ -55,13 +55,8 @@
   .end(function(err, res){
 
   });
-</code></pre><p>  <strong>DELETE</strong> is a special-case, as it&#39;s a reserved word, so the method is named <code>.del()</code>:</p>
-<pre><code>request
-  .del(&#39;/user/1&#39;)
-  .end(function(err, res){
-
-  });
-</code></pre><p>  The HTTP method defaults to <strong>GET</strong>, so if you wish, the following is valid:</p>
+</code></pre><p>  <strong>DELETE</strong> can be also called as <code>.del()</code> for compatibility with old IE where <code>delete</code> is a reserved word.</p>
+<p>  The HTTP method defaults to <strong>GET</strong>, so if you wish, the following is valid:</p>
 <pre><code> request(&#39;/search&#39;, function(err, res){
 
  });
@@ -77,7 +72,7 @@
    .get(&#39;/search&#39;)
    .set({ &#39;API-Key&#39;: &#39;foobar&#39;, Accept: &#39;application/json&#39; })
    .end(callback);
-</code></pre><h2 id="get-requests">GET requests</h2>
+</code></pre><h2 id="-get-requests"><code>GET</code> requests</h2>
 <p> The <code>.query()</code> method accepts objects, which when used with the <strong>GET</strong> method will form a query-string. The following will produce the path <code>/search?query=Manny&amp;range=1..5&amp;order=desc</code>.</p>
 <pre><code> request
    .get(&#39;/search&#39;)
@@ -109,7 +104,7 @@
     .end(function(err, res){
 
     });
-</code></pre><h2 id="head-requests">HEAD requests</h2>
+</code></pre><h2 id="-head-requests"><code>HEAD</code> requests</h2>
 <p>You can also use the <code>.query()</code> method for HEAD requests. The following will produce the path <code>/users?email=joe@smith.com</code>.</p>
 <pre><code>  request
     .head(&#39;/users&#39;)
@@ -117,7 +112,7 @@
     .end(function(err, res){
 
     });
-</code></pre><h2 id="post-put-requests">POST / PUT requests</h2>
+</code></pre><h2 id="-post-put-requests"><code>POST</code> / <code>PUT</code> requests</h2>
 <p>  A typical JSON <strong>POST</strong> request might look a little like the following, where we set the Content-Type header field appropriately, and &quot;write&quot; some data, in this case just a JSON string.</p>
 <pre><code>  request.post(&#39;/user&#39;)
     .set(&#39;Content-Type&#39;, &#39;application/json&#39;)
@@ -132,20 +127,19 @@
     .send({ name: &#39;tj&#39; })
     .send({ pet: &#39;tobi&#39; })
     .end(callback)
-</code></pre><p>  By default sending strings will set the Content-Type to <code>application/x-www-form-urlencoded</code>,
+</code></pre><p>  By default sending strings will set the <code>Content-Type</code> to <code>application/x-www-form-urlencoded</code>,
   multiple calls will be concatenated with <code>&amp;</code>, here resulting in <code>name=tj&amp;pet=tobi</code>:</p>
 <pre><code>  request.post(&#39;/user&#39;)
     .send(&#39;name=tj&#39;)
     .send(&#39;pet=tobi&#39;)
     .end(callback);
-</code></pre><p>  SuperAgent formats are extensible, however by default &quot;json&quot; and &quot;form&quot; are supported. To send the data as <code>application/x-www-form-urlencoded</code> simply invoke <code>.type()</code> with &quot;form&quot;, where the default is &quot;json&quot;. This request will POST the body &quot;name=tj&amp;pet=tobi&quot;.</p>
+</code></pre><p>  SuperAgent formats are extensible, however by default &quot;json&quot; and &quot;form&quot; are supported. To send the data as <code>application/x-www-form-urlencoded</code> simply invoke <code>.type()</code> with &quot;form&quot;, where the default is &quot;json&quot;. This request will <strong>POST</strong> the body &quot;name=tj&amp;pet=tobi&quot;.</p>
 <pre><code>  request.post(&#39;/user&#39;)
     .type(&#39;form&#39;)
     .send({ name: &#39;tj&#39; })
     .send({ pet: &#39;tobi&#39; })
     .end(callback)
-</code></pre><p> Note: &quot;form&quot; is aliased as &quot;form-data&quot; and &quot;urlencoded&quot; for backwards compat.</p>
-<h2 id="setting-the-content-type">Setting the Content-Type</h2>
+</code></pre><h2 id="setting-the-content-type-">Setting the <code>Content-Type</code></h2>
 <p>  The obvious solution is to use the <code>.set()</code> method:</p>
 <pre><code> request.post(&#39;/user&#39;)
    .set(&#39;Content-Type&#39;, &#39;application/json&#39;)
@@ -163,7 +157,7 @@
 </code></pre><h2 id="serializing-request-body">Serializing request body</h2>
 <p>SuperAgent will automatically serialize JSON and forms. If you want to send the payload in a custom format, you can replace the built-in serialization with <code>.serialize()</code> method.</p>
 <h2 id="setting-accept">Setting Accept</h2>
-<p>In a similar fashion to the <code>.type()</code> method it is also possible to set the Accept header via the short hand method <code>.accept()</code>. Which references <code>request.types</code> as well allowing you to specify either the full canonicalized MIME type name as type/subtype, or the extension suffix form as &quot;xml&quot;, &quot;json&quot;, &quot;png&quot;, etc for convenience:</p>
+<p>In a similar fashion to the <code>.type()</code> method it is also possible to set the <code>Accept</code> header via the short hand method <code>.accept()</code>. Which references <code>request.types</code> as well allowing you to specify either the full canonicalized MIME type name as <code>type/subtype</code>, or the extension suffix form as &quot;xml&quot;, &quot;json&quot;, &quot;png&quot;, etc. for convenience:</p>
 <pre><code> request.get(&#39;/user&#39;)
    .accept(&#39;application/json&#39;)
 
@@ -172,7 +166,9 @@
 
  request.post(&#39;/user&#39;)
    .accept(&#39;png&#39;)
-</code></pre><h2 id="query-strings">Query strings</h2>
+</code></pre><h3 id="facebook-and-accept-json">Facebook and Accept JSON</h3>
+<p>If you are calling Facebook&#39;s API, be sure to send an <code>Accept: application/json</code> header in your request. If you don&#39;t do this, Facebook will respond with <code>Content-Type: text/javascript; charset=UTF-8</code>, which SuperAgent will not parse and thus <code>res.body</code> will be undefined. You can do this with either <code>req.accept(&#39;json&#39;)</code> or <code>req.header(&#39;Accept&#39;, &#39;application/json&#39;)</code>. See <a href="https://github.com/visionmedia/superagent/issues/1078">issue 1078</a> for details.</p>
+<h2 id="query-strings">Query strings</h2>
 <p>  <code>res.query(obj)</code> is a method which may be used to build up a query-string. For example populating <code>?format=json&amp;dest=/login</code> on a <strong>POST</strong>:</p>
 <pre><code>request
   .post(&#39;/&#39;)
@@ -180,11 +176,29 @@
   .query({ dest: &#39;/login&#39; })
   .send({ post: &#39;data&#39;, here: &#39;wahoo&#39; })
   .end(callback);
-</code></pre><h2 id="parsing-response-bodies">Parsing response bodies</h2>
+</code></pre><p>  By default the query string is not assembled in any particular order. An asciibetically-sorted query string can be enabled with <code>req.sortQuery()</code>. You may also provide a custom sorting comparison function with <code>req.sortQuery(myComparisonFn)</code>. The comparison function should take 2 arguments and return a negative/zero/positive integer.</p>
+<pre><code class="lang-js"> // default order
+ request.get(&#39;/user&#39;)
+   .query(&#39;name=Nick&#39;)
+   .query(&#39;search=Manny&#39;)
+   .sortQuery()
+   .end(callback)
+
+ // customized sort function
+ request.get(&#39;/user&#39;)
+   .query(&#39;name=Nick&#39;)
+   .query(&#39;search=Manny&#39;)
+   .sortQuery(function(a, b){
+     return a.length - b.length;
+   })
+   .end(callback)
+</code></pre>
+<h2 id="parsing-response-bodies">Parsing response bodies</h2>
 <p>  SuperAgent will parse known response-body data for you, currently supporting <code>application/x-www-form-urlencoded</code>, <code>application/json</code>, and <code>multipart/form-data</code>.</p>
 <p>  You can set a custom parser (that takes precedence over built-in parsers) with the <code>.buffer(true).parse(fn)</code> method. If response buffering is not enabled (<code>.buffer(false)</code>) then the <code>response</code> event will be emitted without waiting for the body parser to finish, so <code>response.body</code> won&#39;t be available.</p>
 <h3 id="json-urlencoded">JSON / Urlencoded</h3>
-<p>  The property <code>res.body</code> is the parsed object, for example if a request responded with the JSON string &#39;{&quot;user&quot;:{&quot;name&quot;:&quot;tobi&quot;}}&#39;, <code>res.body.user.name</code> would be &quot;tobi&quot;. Likewise the x-www-form-urlencoded value of &quot;user[name]=tobi&quot; would yield the same result.</p>
+<p>  The property <code>res.body</code> is the parsed object, for example if a request responded with the JSON string &#39;{&quot;user&quot;:{&quot;name&quot;:&quot;tobi&quot;}}&#39;, <code>res.body.user.name</code> would be &quot;tobi&quot;. Likewise the x-www-form-urlencoded value of &quot;user[name]=tobi&quot; would yield the same result. Only one level of nesting is supported. If you need more complex data, send JSON instead.</p>
+<p>  Arrays are sent by repeating the key. <code>.send({color: [&#39;red&#39;,&#39;blue&#39;]})</code> sends <code>color=red&amp;color=blue</code>. If you want the array keys to contain <code>[]</code> in their name, you must add it yourself, as SuperAgent doesn&#39;t add it automatically.</p>
 <h3 id="multipart">Multipart</h3>
 <p>  The Node client supports <em>multipart/form-data</em> via the <a href="https://github.com/felixge/node-formidable">Formidable</a> module. When parsing multipart responses, the object <code>res.files</code> is also available to you. Suppose for example a request responds with the following multipart body:</p>
 <pre><code>--whoop
@@ -205,8 +219,7 @@ Tobi
 <li><code>&#39;blob&#39;</code> passed through to the XmlHTTPRequest <code>responseType</code> property</li>
 <li><code>&#39;arraybuffer&#39;</code> passed through to the XmlHTTPRequest <code>responseType</code> property</li>
 </ul>
-<p><strong>Example</strong></p>
-<pre><code class="lang-js">req.get(&#39;/&#39;)
+<pre><code class="lang-js">req.get(&#39;/binary.data&#39;)
   .responseType(&#39;blob&#39;)
   .end(function (error, res) {
     // res.body will be a browser native Blob type here
@@ -273,21 +286,27 @@ Tobi
   .get(&#39;/some.png&#39;)
   .redirects(2)
   .end(callback);
-</code></pre><h2 id="piping-data">Piping data</h2>
+</code></pre><h2 id="preserving-cookies">Preserving cookies</h2>
+<p>  In Node SuperAgent does not save cookies by default, but you can use the <code>.agent()</code> method to create a copy of SuperAgent that saves cookies. Each copy has a separate cookie jar.</p>
+<pre><code>const agent = request.agent();
+agent
+  .post(&#39;/login&#39;)
+  .then(() =&gt; {
+    return agent.get(&#39;/cookied-page&#39;);
+  });
+</code></pre><p>  In browsers cookies are managed automatically by the browser, and there is no <code>.agent()</code> method.</p>
+<h2 id="piping-data">Piping data</h2>
 <p>  The Node client allows you to pipe data to and from the request. For example piping a file&#39;s contents as the request:</p>
-<pre><code>var request = require(&#39;superagent&#39;)
-  , fs = require(&#39;fs&#39;);
+<pre><code>const request = require(&#39;superagent&#39;);
+const fs = require(&#39;fs&#39;);
 
-var stream = fs.createReadStream(&#39;path/to/my.json&#39;);
-var req = request.post(&#39;/somewhere&#39;);
+const stream = fs.createReadStream(&#39;path/to/my.json&#39;);
+const req = request.post(&#39;/somewhere&#39;);
 req.type(&#39;json&#39;);
 stream.pipe(req);
 </code></pre><p>  Or piping the response to a file:</p>
-<pre><code>var request = require(&#39;superagent&#39;)
-  , fs = require(&#39;fs&#39;);
-
-var stream = fs.createWriteStream(&#39;path/to/my.json&#39;);
-var req = request.get(&#39;/some.json&#39;);
+<pre><code>const stream = fs.createWriteStream(&#39;path/to/my.json&#39;);
+const req = request.get(&#39;/some.json&#39;);
 req.pipe(stream);
 </code></pre><h2 id="multipart-requests">Multipart requests</h2>
 <p>  SuperAgent is also great for <em>building</em> multipart requests for which it provides methods <code>.attach()</code> and <code>.field()</code>.</p>
@@ -315,16 +334,15 @@ req.pipe(stream);
 <p>  When buffered the <code>res.buffered</code> flag is provided, you may use this to
   handle both buffered and unbuffered responses in the same callback.</p>
 <h2 id="cors">CORS</h2>
+<p>  For security reasons, browsers will block cross-origin requests unless the server opts-in using CORS headers. Browsers will also make extra <strong>OPTIONS</strong> requests to check what HTTP headers and methods are allowed by the server. <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">Read more about CORS</a>.</p>
 <p>  The <code>.withCredentials()</code> method enables the ability to send cookies
-  from the origin, however only when &quot;Access-Control-Allow-Origin&quot; is
-  <em>not</em> a wildcard (&quot;*&quot;), and &quot;Access-Control-Allow-Credentials&quot; is &quot;true&quot;.</p>
+  from the origin, however only when <code>Access-Control-Allow-Origin</code> is <em>not</em> a wildcard (&quot;*&quot;), and <code>Access-Control-Allow-Credentials</code> is &quot;true&quot;.</p>
 <pre><code>request
-  .get(&#39;http://localhost:4001/&#39;)
+  .get(&#39;http://api.example.com:4001/&#39;)
   .withCredentials()
-  .end(function(err, res){
+  .then(function(res){
     assert.equal(200, res.status);
     assert.equal(&#39;tobi&#39;, res.text);
-    next();
   })
 </code></pre><h2 id="error-handling">Error handling</h2>
 <p>Your callback function will always be passed two arguments: error and response. If no error occurred, the first argument will be null:</p>
@@ -358,12 +376,11 @@ else if (err) {
 </code></pre><h2 id="promise-and-generator-support">Promise and Generator support</h2>
 <p>SuperAgent&#39;s request is a &quot;thenable&quot; object that&#39;s compatible with JavaScript promises and <code>async</code>/<code>await</code> syntax.</p>
 <p>Libraries like <a href="https://github.com/tj/co">co</a> or a web framework like <a href="https://github.com/koajs/koa">koa</a> can <code>yield</code> on any SuperAgent method:</p>
-<pre><code>var res = yield request
+<pre><code>const req = request
   .get(&#39;http://local&#39;)
-  .auth(&#39;tobi&#39;, &#39;learnboost&#39;)
+  .auth(&#39;tobi&#39;, &#39;learnboost&#39;);
+const res = yield req;
 </code></pre><p>Note that SuperAgent expects the global <code>Promise</code> object to be present. You&#39;ll need a polyfill to use promises in Internet Explorer or Node.js 0.10.</p>
-<h2 id="facebook-and-accept-json">Facebook and Accept JSON</h2>
-<p>If you are calling Facebook&#39;s API, be sure to send an <code>Accept: application/json</code> header in your request. If you don&#39;t do this, Facebook will respond with <code>Content-Type: text/javascript; charset=UTF-8</code>, which superagent will not parse and thus <code>res.body</code> will be undefined. You can do this with either <code>req.accept(&#39;json&#39;)</code> or <code>req.header(&#39;Accept&#39;, &#39;application/json&#39;)</code>. See <a href="https://github.com/visionmedia/superagent/issues/1078">issue 1078</a> for details.</p>
 <h2 id="browser-and-node-versions">Browser and node versions</h2>
 <p>SuperAgent has two implementations: one for web browsers (using XHR) and one for Node.JS (using core http module). By default Browserify and WebPack will pick the browser version.</p>
 <p>If want to use WebPack to compile code for Node.JS, you <em>must</em> specify <a href="webpack.github.io/docs/configuration.html#target">node target</a> in its configuration.</p>

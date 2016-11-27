@@ -450,6 +450,45 @@ setTimeout(function() {
 });</code></pre></dd>
           </dl>
         </section>
+        <section class="suite">
+          <h1>req.sortQuery()</h1>
+          <dl>
+            <dt>should sort the request querystring</dt>
+            <dd><pre><code>request
+.get(uri + '/url')
+.query('search=Manny')
+.query('order=desc')
+.sortQuery()
+.end(function(err, res){
+  assert.equal(res.text, '/url?order=desc&amp;search=Manny')
+  done();
+});</code></pre></dd>
+            <dt>should allow disabling sorting</dt>
+            <dd><pre><code>request
+.get(uri + '/url')
+.query('search=Manny')
+.query('order=desc')
+.sortQuery() // take default of true
+.sortQuery(false) // override it in later call
+.end(function(err, res){
+  assert.equal(res.text, '/url?search=Manny&amp;order=desc')
+  done();
+});</code></pre></dd>
+            <dt>should sort the request querystring using customized function</dt>
+            <dd><pre><code>request
+.get(uri + '/url')
+.query('name=Nick')
+.query('search=Manny')
+.query('order=desc')
+.sortQuery(function(a, b){
+  return a.length - b.length;
+})
+.end(function(err, res){
+  assert.equal(res.text, '/url?name=Nick&amp;order=desc&amp;search=Manny')
+  done();
+});</code></pre></dd>
+          </dl>
+        </section>
       </dl>
     </section>
     <section class="suite">
