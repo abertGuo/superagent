@@ -49,6 +49,18 @@ describe('req.field', function(){
       });
   });
 
+  it('allow objects', function(done){
+    request
+      .post(base + '/echo')
+      .type('form')
+      .field({bools: true, strings: 'true'})
+      .end(function(err, res){
+        assert.equal('multipart/form-data', res.type);
+        assert.deepEqual(res.body, {bools:'true', strings:'true'});
+        done();
+      });
+  });
+
   it('throw when empty', function(){
     should.throws(function(){
       request
