@@ -1,6 +1,7 @@
 var setup = require('./support/setup');
 var base = setup.uri;
 var should = require('should');
+var assert = require('assert');
 var request = require('../');
 
 describe('req.send(Object) as "form"', function(){
@@ -35,6 +36,19 @@ describe('req.send(Object) as "form"', function(){
 })
 
 describe('req.field', function(){
+  it('allow bools', function(done){
+    request
+      .post(base + '/echo')
+      .type('form')
+      .field('bools', true)
+      .field('strings', 'true')
+      .end(function(err, res){
+        assert.equal('multipart/form-data', res.type);
+        assert.deepEqual(res.body, {bools:'true', strings:'true'});
+        done();
+      });
+  });
+
   it('throw when empty', function(){
     should.throws(function(){
       request
